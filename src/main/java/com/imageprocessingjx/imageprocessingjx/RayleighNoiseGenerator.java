@@ -1,15 +1,7 @@
 package com.imageprocessingjx.imageprocessingjx;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+
 import javafx.scene.image.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+
 
 
 public class RayleighNoiseGenerator {

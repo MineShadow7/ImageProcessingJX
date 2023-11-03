@@ -17,7 +17,7 @@
          <ComboBox fx:id="NoisesComboBox" onAction="#createNoisesComboBoxOptions" prefHeight="24.0" prefWidth="186.0" promptText="Опции и Действия" />
      </items>
    </ToolBar>
-   <AnchorPane prefHeight="587.0" prefWidth="1226.0">
+   <AnchorPane fx:id="anchorPaneObj" prefHeight="587.0" prefWidth="1226.0">
       <children>
          <Button layoutX="1137.0" layoutY="600.0" onAction="#onExitButtonClick" prefHeight="43.0" prefWidth="89.0" text="Exit" />
          <ImageView fx:id="ImageView1" fitHeight="400.0" fitWidth="580.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" />
@@ -25,8 +25,9 @@
          <Button layoutX="14.0" layoutY="576.0" mnemonicParsing="false" onAction="#onImgBtn1Click" text="Изобр.1" />
          <Button layoutX="92.0" layoutY="576.0" mnemonicParsing="false" onAction="#onImgBtn2Click" text="Изобр.2" />
          <ComboBox fx:id="comboBox" layoutX="173.0" layoutY="621.0" onAction="#createImageChoices" prefWidth="150.0" />
-       <Button layoutX="339.0" layoutY="621.0" mnemonicParsing="false" onAction="#onNoiseBtnClick" text="Применить Опции" />
+          <Button layoutX="339.0" layoutY="621.0" mnemonicParsing="false" onAction="#onNoiseBtnClick" text="Применить Опции" />
          <Button layoutX="45.0" layoutY="610.0" mnemonicParsing="false" onAction="#onImgBtn3Click" text="Оба Изобр." />
+         <Button layoutX="486.0" layoutY="621.0" mnemonicParsing="false" onAction="#onHistogramBtnClick" text="Гистограмма" />
       </children>
    </AnchorPane>
 </VBox>
