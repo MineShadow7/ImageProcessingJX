@@ -3,8 +3,6 @@ package com.imageprocessingjx.imageprocessingjx;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 
-import java.awt.image.BufferedImage;
-
 public class УИК {
     public static double calculateUQ(Image image1, Image image2) throws Exception {
         double uq = 0;
@@ -18,8 +16,7 @@ public class УИК {
         int[] pixelColor2;
 
         if(imageSize2 != imageSize){
-            Exception SizeException = new Exception();
-            throw SizeException;
+            throw new Exception();
         }
         for (int i = 0; i < width; i++)
         {
@@ -63,8 +60,7 @@ public class УИК {
             int red =   (clr & 0x00ff0000) >> 16;
             int green = (clr & 0x0000ff00) >> 8;
             int blue =   clr & 0x000000ff;
-            int[] Color = {red, green ,blue};
-            return Color;
+        return new int[]{red, green ,blue};
         }
 
     protected static int Clamp(int value, int min, int max){
