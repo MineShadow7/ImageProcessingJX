@@ -1,9 +1,6 @@
 package com.imageprocessingjx.imageprocessingjx;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.paint.Color;
-
 import static com.imageprocessingjx.imageprocessingjx.УИК.Clamp;
 import static com.imageprocessingjx.imageprocessingjx.УИК.GetPixelColor;
 

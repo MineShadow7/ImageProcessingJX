@@ -2,9 +2,7 @@ package com.imageprocessingjx.imageprocessingjx;
 
 import javafx.scene.image.*;
 
-
-
-public class RayleighNoiseGenerator {
+public class RayleighNoise {
 
     public static Image generateNoise(Image image) {
         // Convert to JavaFX image
