@@ -73,8 +73,10 @@ public class UIController {
         }
 
         // Add the series to the lineChart
-        histogramChart.setLayoutX(602);
-        histogramChart.setLayoutY(420);
+        histogramChart.setLayoutX(510);
+        histogramChart.setLayoutY(370);
+        histogramChart.setPrefWidth(345);
+        histogramChart.setPrefHeight(241);
         histogramChart.setVisible(true);
         histogramChart.getData().add(series);
         anchorPaneObj.getChildren().removeAll(xAxis);
@@ -188,5 +190,9 @@ public class UIController {
     public void refreshHistogram(MouseEvent mouseEvent) {
         histogramChart.setVisible(false);
 
+    }
+
+    public void onHideHistogramClick(ActionEvent actionEvent) {
+        anchorPaneObj.getChildren().removeAll(histogramChart);
     }
 }

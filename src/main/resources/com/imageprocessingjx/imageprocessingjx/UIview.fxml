@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="834.0" prefWidth="1407.0" spacing="20.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.imageprocessingjx.imageprocessingjx.UIController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.imageprocessingjx.imageprocessingjx.UIController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
@@ -24,25 +24,25 @@
           <Button mnemonicParsing="false" onAction="#onNoiseBtnClick" text="Применить Опции" />
      </items>
    </ToolBar>
-   <AnchorPane fx:id="anchorPaneObj" prefHeight="740.0" prefWidth="1407.0">
+   <AnchorPane fx:id="anchorPaneObj" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="1024.0">
       <children>
-         <Label layoutX="167.0" layoutY="679.0" text="Выбор Изображения">
+         <Label layoutX="167.0" layoutY="548.0" text="Выбор Изображения">
             <font>
                <Font size="15.0" />
             </font>
          </Label>
-         <ImageView fx:id="ImageView1" fitHeight="400.0" fitWidth="580.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
+         <ImageView fx:id="ImageView1" fitHeight="300.0" fitWidth="450.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
             <viewport>
                <Rectangle2D />
             </viewport></ImageView>
-         <ImageView fx:id="ImageView2" fitHeight="400.0" fitWidth="580.0" layoutX="773.0" layoutY="14.0" pickOnBounds="true" />
-         <Button layoutX="1257.0" layoutY="679.0" onAction="#onExitButtonClick" prefHeight="43.0" prefWidth="89.0" text="Exit" />
-         <Button layoutX="14.0" layoutY="672.0" mnemonicParsing="false" onAction="#onImgBtn1Click" text="Изобр.1" />
-         <Button layoutX="92.0" layoutY="672.0" mnemonicParsing="false" onAction="#onImgBtn2Click" text="Изобр.2" />
-         <Button layoutX="45.0" layoutY="706.0" mnemonicParsing="false" onAction="#onImgBtn3Click" text="Оба Изобр." />
-         <Button layoutX="333.0" layoutY="699.0" mnemonicParsing="false" onAction="#onHistogramBtnClick" text="Гистограмма изображения" />
-         <ComboBox fx:id="comboBox" layoutX="173.0" layoutY="699.0" onAction="#createImageChoices" prefWidth="150.0" />
-         <LineChart fx:id="histogramChart" layoutX="602.0" layoutY="420.0" onMouseClicked="#refreshHistogram" prefHeight="312.0" prefWidth="510.0" visible="false">
+         <ImageView fx:id="ImageView2" fitHeight="300.0" fitWidth="450.0" layoutX="560.0" layoutY="14.0" pickOnBounds="true" />
+         <Button layoutX="921.0" layoutY="549.0" onAction="#onExitButtonClick" prefHeight="43.0" prefWidth="89.0" text="Exit" />
+         <Button layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#onImgBtn1Click" text="Изобр.1" />
+         <Button layoutX="92.0" layoutY="541.0" mnemonicParsing="false" onAction="#onImgBtn2Click" text="Изобр.2" />
+         <Button layoutX="45.0" layoutY="575.0" mnemonicParsing="false" onAction="#onImgBtn3Click" text="Оба Изобр." />
+         <Button layoutX="333.0" layoutY="568.0" mnemonicParsing="false" onAction="#onHistogramBtnClick" text="Гистограмма изображения" />
+         <ComboBox fx:id="comboBox" layoutX="173.0" layoutY="568.0" onAction="#createImageChoices" prefWidth="150.0" />
+         <LineChart fx:id="histogramChart" layoutX="510.0" layoutY="370.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#refreshHistogram" prefHeight="241.0" prefWidth="345.0" visible="false">
            <xAxis>
              <CategoryAxis side="BOTTOM" />
            </xAxis>
@@ -50,6 +50,7 @@
              <NumberAxis side="LEFT" />
            </yAxis>
          </LineChart>
+         <Button layoutX="333.0" layoutY="541.0" mnemonicParsing="false" onAction="#onHideHistogramClick" text="Убрать Гистограмму" />
       </children>
    </AnchorPane>
 </VBox>
