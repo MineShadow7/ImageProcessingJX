@@ -64,6 +64,6 @@ public class RayleighNoise {
         double x = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 
         // Scale the value to fit in the range of 0-255
-        return (x + 3) * (255 / 6);
+        return (x) * (255 / 6);
     }
 }
