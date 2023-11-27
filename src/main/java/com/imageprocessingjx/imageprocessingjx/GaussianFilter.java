@@ -1,23 +1,8 @@
 package com.imageprocessingjx.imageprocessingjx;
-
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-import java.awt.image.BufferedImage;
-import static com.almasb.fxgl.texture.ImagesKt.toBufferedImage;
-
 public class GaussianFilter {
     //This seems like a very costly operation, only doing this once.
     private static final double SQRT2PI = Math.sqrt(2 * Math.PI);
 
-    /**
-     * Send this method an int[][][] RGB array, an int radius, and a double intensity to blur the
-     * image with a Gaussian filter of that radius and intensity.
-     *
-     * @param raw       int[][][], an array of RGB values to be blurred
-     * @param rad       int, the radius of the Gaussian filter (filter width = 2 * r + 1)
-     * @param intens    double, the intensity of the Gaussian blur
-     * @return outRGB   int[][][], an array of RGB values from blurring input image with Gaussian filter
-     */
     public static int[][][] BlurRGB(int[][][] raw, int rad, double intens) {
         int height = raw.length;
         int width = raw[0].length;
@@ -77,15 +62,6 @@ public class GaussianFilter {
         return outRGB;
     }
 
-    /**
-     * Send this method an int[][] grayscale array, an int radius, and a double intensity to blur the
-     * image with a Gaussian filter of that radius and intensity.
-     *
-     * @param raw       int[][], an array of grayscale values to be blurred
-     * @param rad       int, the radius of the Gaussian filter (filter width = 2 * r + 1)
-     * @param intens    double, the intensity of the Gaussian blur
-     * @return outRGB   int[][], an array of grayscale values from blurring input image with Gaussian filter
-     */
     public static int[][] BlurGS (int[][] raw, int rad, double intens) {
         int height = raw.length;
         int width = raw[0].length;

@@ -1,9 +1,6 @@
 package com.imageprocessingjx.imageprocessingjx;
 
 import java.awt.image.BufferedImage;
-import java.awt.Color;
-
-import java.awt.image.BufferedImage;
 
 public class CannyEdgeDetection {
     private static final int GAUSSIAN_RADIUS = 7;
@@ -20,19 +17,6 @@ public class CannyEdgeDetection {
     private static int[][] gy;      //Mask resulting from vertical 3x3 Sobel mask
     private static double[][] mag;  //Direction mask. Equals Math.sqrt(gx^2 * gy^2)
 
-    /**
-     * This function accepts a single-channel (grayscale, red, blue, Y, etc) image and returns an image with detected edges.
-     * Currently computes hysteresis thresholds based on an a given ratio, but in the future all parameters will be passed
-     * in from an external source to allow another program to optimize them.
-     *
-     * @param img               A BufferedImage that is to undergo Canny edge detector.
-     * @param numberDeviations  Set high threshold as a function of number of standard deviations above the mean.
-     *                          mean + std. dev: 68% of pixel magnitudes fall below this value
-     *                          mean + 2 * std. dev: 95% of pixel magnitudes fall below this value
-     *                          mean + 3 * std. dev: 99.7% of pixel magnitudes fall below this value
-     * @param fract             Set low threshold as a fraction of the high threshold
-     * @return edges            A binary image of the edges in the input image.
-     */
     public static BufferedImage CannyEdges(BufferedImage img, int numberDeviations, double fract) {
         int[][] raw = null;
         int[][] blurred = null;
@@ -59,8 +43,6 @@ public class CannyEdgeDetection {
 
     /**
      * Send this method the horizontal and vertical Sobel convolutions to create the gradient magnitude image.
-     *
-     * @return void
      */
     private static void Magnitude() {
         double sum = 0;
@@ -94,8 +76,6 @@ public class CannyEdgeDetection {
 
     /**
      * Send this method the horizontal and vertical Sobel convolutions to create the gradient direction image.
-     *
-     * @return void
      */
     private static void Direction() {
         int height = gx.length;
@@ -129,8 +109,6 @@ public class CannyEdgeDetection {
 
     /**
      * Call this method to use gradient direction and magnitude to suppress lesser pixels.
-     *
-     * @return void
      */
     private static void Suppression() {
         int height = mag.length - 1;
@@ -168,8 +146,6 @@ public class CannyEdgeDetection {
 
     /**
      * Call this method to use an upper and lower threshold to decided which non-suppressed pixels are edges.
-     *
-     * @return bin  int[][], the binary image showing edges in the original.
      */
     private static int[][] Hysteresis() {
         int height = mag.length - 1;
