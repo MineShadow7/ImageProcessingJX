@@ -1,6 +1,7 @@
 package com.imageprocessingjx.imageprocessingjx;
 
 import javafx.collections.FXCollections;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -10,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,10 @@ public class UIController {
     @FXML
     private Label welcomeText;
 
+    //Canny Edge Detection Variables
+    private static final double CANNY_THRESHOLD_RATIO = .2; //Suggested range .2 - .4
+    private static final int CANNY_STD_DEV = 1;             //Range 1-3
+
 
     public void initialize() {
         // получаем путь к папке с изображениями
@@ -47,8 +54,8 @@ public class UIController {
         comboBox.setItems(FXCollections.observableArrayList(imagesList));
 
         noisesList.add("Шум Райли");
-        noisesList.add("Фильтр Гаусса");
         noisesList.add("Фильтр Билатериальный");
+        noisesList.add("Выделение границ Canny");
         noisesList.add("MSE");
         noisesList.add("УИК");
 
@@ -79,9 +86,6 @@ public class UIController {
         histogramChart.setPrefHeight(241);
         histogramChart.setVisible(true);
         histogramChart.getData().add(series);
-        anchorPaneObj.getChildren().removeAll(xAxis);
-        anchorPaneObj.getChildren().removeAll(yAxis);
-        anchorPaneObj.getChildren().removeAll(histogramChart);
         anchorPaneObj.getChildren().add(histogramChart);
     }
 
@@ -139,13 +143,20 @@ public class UIController {
             case "Шум Райли":
                 ImageView2.setImage(RayleighNoise.generateNoise(ImageView2.getImage()));
                 break;
-            case "Фильтр Гаусса":
-                SecondImage = GaussianFilter.applyFilter(SecondImage);
-                ImageView2.setImage(SecondImage);
-                break;
             case "Фильтр Билатериальный":
                 SecondImage = BilateralFilter.bilateralFilter(SecondImage);
                 ImageView2.setImage(SecondImage);
+                break;
+            case "Выделение границ Canny":
+                //Sample JCanny usage
+                try {
+                    BufferedImage input = SwingFXUtils.fromFXImage(ImageView2.getImage(), null);
+                    CannyEdgeDetection JCanny = new CannyEdgeDetection();
+                    BufferedImage output = JCanny.CannyEdges(input, CANNY_STD_DEV, CANNY_THRESHOLD_RATIO);
+                    ImageView2.setImage(SwingFXUtils.toFXImage(output, null));
+                } catch (Exception ex) {
+                    System.out.println("ERROR ACCESING IMAGE:\n" + ex.getMessage());
+                }
                 break;
             case "MSE":
                 double MSE;
@@ -193,6 +204,7 @@ public class UIController {
     }
 
     public void onHideHistogramClick(ActionEvent actionEvent) {
+        histogramChart.getData().clear();
         anchorPaneObj.getChildren().removeAll(histogramChart);
     }
 }

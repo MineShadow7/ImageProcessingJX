@@ -6,47 +6,134 @@ import java.awt.image.BufferedImage;
 import static com.almasb.fxgl.texture.ImagesKt.toBufferedImage;
 
 public class GaussianFilter {
-    public static Image applyFilter(Image image1) {
-        // Загрузка изображения
-        BufferedImage image = null;
-        try {
-            image = toBufferedImage(image1);
-        } catch (Exception e) {
-            System.out.println("Ошибка при загрузке изображения");
+    //This seems like a very costly operation, only doing this once.
+    private static final double SQRT2PI = Math.sqrt(2 * Math.PI);
+
+    /**
+     * Send this method an int[][][] RGB array, an int radius, and a double intensity to blur the
+     * image with a Gaussian filter of that radius and intensity.
+     *
+     * @param raw       int[][][], an array of RGB values to be blurred
+     * @param rad       int, the radius of the Gaussian filter (filter width = 2 * r + 1)
+     * @param intens    double, the intensity of the Gaussian blur
+     * @return outRGB   int[][][], an array of RGB values from blurring input image with Gaussian filter
+     */
+    public static int[][][] BlurRGB(int[][][] raw, int rad, double intens) {
+        int height = raw.length;
+        int width = raw[0].length;
+        double intensSquared2 = 2 * intens * intens;
+        //This also seems very costly, do it as little as possible
+        double invIntensSqrPi = 1 / (SQRT2PI * intens);
+        double norm = 0.;
+        double[] mask = new double[2 * rad + 1];
+        int[][][] outRGB = new int[height - 2 * rad][width - 2 * rad][3];
+
+        //Create Gaussian kernel
+        for (int x = -rad; x < rad + 1; x++) {
+            double exp = Math.exp(-((x * x) / intensSquared2));
+
+            mask[x + rad] = invIntensSqrPi * exp;
+            norm += mask[x + rad];
         }
 
-        // Применение фильтра Гаусса для удаления шума
-        assert image != null;
-        int width = image.getWidth();
-        int height = image.getHeight();
-        BufferedImage filteredImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                // Получение окрестности пикселя
-                int sumR = 0;
-                int sumG = 0;
-                int sumB = 0;
-                int count = 0;
-                for (int k = i - 1; k <= i + 1; k++) {
-                    for (int l = j - 1; l <= j + 1; l++) {
-                        if (k >= 0 && k < width && l >= 0 && l < height) {
-                            // Увеличение суммы цветов и количества пикселей в окрестности
-                            sumR += (image.getRGB(k, l) >> 16) & 0xFF;
-                            sumG += (image.getRGB(k, l) >> 8) & 0xFF;
-                            sumB += image.getRGB(k, l) & 0xFF;
-                            count++;
-                        }
+        //Convolve image with kernel horizontally
+        for (int r = rad; r < height - rad; r++) {
+            for (int c = rad; c < width - rad; c++) {
+                double[] sum = new double[3];
+
+                for (int mr = -rad; mr < rad + 1; mr++) {
+                    for (int chan = 0; chan < 3; chan++) {
+                        sum[chan] += (mask[mr + rad] * raw[r][c + mr][chan]);
                     }
                 }
-                // Вычисление среднего значения цветов
-                int avgR = sumR / count;
-                int avgG = sumG / count;
-                int avgB = sumB / count;
-                // Установка нового цвета пикселя
-                filteredImage.setRGB(i, j, (avgR << 16) | (avgG << 8) | avgB);
+
+                //Normalize channels after blur
+                for (int chan = 0; chan < 3; chan++) {
+                    sum[chan] /= norm;
+                    outRGB[r - rad][c - rad][chan] = (int) Math.round(sum[chan]);
+                }
             }
         }
-        // Сохранение профильтрованного изображения
-        return SwingFXUtils.toFXImage(filteredImage, null);
+
+        //Convolve image with kernel vertically
+        for (int r = rad; r < height - rad; r++) {
+            for (int c = rad; c < width - rad; c++) {
+                double[] sum = new double[3];
+
+                for (int mr = -rad; mr < rad + 1; mr++) {
+                    for(int chan = 0; chan < 3; chan++) {
+                        sum[chan] += (mask[mr + rad] * raw[r + mr][c][chan]);
+                    }
+                }
+
+                //Normalize channels after blur
+                for (int chan = 0; chan < 3; chan++) {
+                    sum[chan] /= norm;
+                    outRGB[r - rad][c - rad][chan] = (int) Math.round(sum[chan]);
+                }
+            }
+        }
+
+        return outRGB;
+    }
+
+    /**
+     * Send this method an int[][] grayscale array, an int radius, and a double intensity to blur the
+     * image with a Gaussian filter of that radius and intensity.
+     *
+     * @param raw       int[][], an array of grayscale values to be blurred
+     * @param rad       int, the radius of the Gaussian filter (filter width = 2 * r + 1)
+     * @param intens    double, the intensity of the Gaussian blur
+     * @return outRGB   int[][], an array of grayscale values from blurring input image with Gaussian filter
+     */
+    public static int[][] BlurGS (int[][] raw, int rad, double intens) {
+        int height = raw.length;
+        int width = raw[0].length;
+        double norm = 0.;
+        double intensSquared2 = 2 * intens * intens;
+        //This also seems very costly, do it as little as possible
+        double invIntensSqrPi = 1 / (SQRT2PI * intens);
+        double[] mask = new double[2 * rad + 1];
+        int[][] outGS = new int[height - 2 * rad][width - 2 * rad];
+
+        //Create Gaussian kernel
+        for (int x = -rad; x < rad + 1; x++) {
+            double exp = Math.exp(-((x * x) / intensSquared2));
+
+            mask[x + rad] = invIntensSqrPi * exp;
+            norm += mask[x + rad];
+        }
+
+        //Convolve image with kernel horizontally
+        for (int r = rad; r < height - rad; r++) {
+            for (int c = rad; c < width - rad; c++) {
+                double sum = 0.;
+
+                for (int mr = -rad; mr < rad + 1; mr++) {
+                    sum += (mask[mr + rad] * raw[r][c + mr]);
+                }
+
+                //Normalize channel after blur
+                sum /= norm;
+                outGS[r - rad][c - rad] = (int) Math.round(sum);
+            }
+        }
+
+        //Convolve image with kernel vertically
+        for (int r = rad; r < height - rad; r++) {
+            for (int c = rad; c < width - rad; c++) {
+                double sum = 0.;
+
+                for(int mr = -rad; mr < rad + 1; mr++) {
+                    sum += (mask[mr + rad] * raw[r + mr][c]);
+                }
+
+                //Normalize channel after blur
+                sum /= norm;
+                outGS[r - rad][c - rad] = (int) Math.round(sum);
+            }
+        }
+
+        return outGS;
     }
 }
