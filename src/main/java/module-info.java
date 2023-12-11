@@ -10,6 +10,7 @@ module com.imageprocessingjx.imageprocessingjx {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires annotations;
 
     opens com.imageprocessingjx.imageprocessingjx to javafx.fxml;
     exports com.imageprocessingjx.imageprocessingjx;

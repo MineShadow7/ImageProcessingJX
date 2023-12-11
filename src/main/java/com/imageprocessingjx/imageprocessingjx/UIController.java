@@ -24,6 +24,7 @@ public class UIController {
     static NumberAxis xAxis = new NumberAxis();
     static NumberAxis yAxis = new NumberAxis();
     public static LineChart<Number, Number> histogramChart = new LineChart<>(xAxis, yAxis);;
+    public TextArea textField;
     private List<String> imagesList = new ArrayList<>();
     private List<String> noisesList = new ArrayList<>();
     public static String imagePath;
@@ -56,9 +57,12 @@ public class UIController {
         noisesList.add("Шум Райли");
         noisesList.add("Фильтр Билатериальный");
         noisesList.add("Выделение границ Canny");
+        noisesList.add("Моменты форм объектов изображения");
+        noisesList.add("Сегментация Distance Transform и Моменты сегментов");
         noisesList.add("MSE");
         noisesList.add("УИК");
 
+        textField.setVisible(false);
         NoisesComboBox.setItems(FXCollections.observableArrayList(noisesList));
     }
 
@@ -158,6 +162,29 @@ public class UIController {
                     System.out.println("ERROR ACCESING IMAGE:\n" + ex.getMessage());
                 }
                 break;
+            case "Моменты форм объектов изображения":
+                BufferedImage image = SwingFXUtils.fromFXImage(ImageView2.getImage(), null);
+                ImageMoments moments = new ImageMoments(image);
+                textField.setVisible(true);
+                textField.setText("CentralMomentXX: " + String.valueOf(moments.getCentralMomentXX()) + "\r\n" + "CentralMomentXY: " +  String.valueOf(moments.getCentralMomentXY() + "\r\n" +
+                        "CentralMomentYY: " + String.valueOf(moments.getCentralMomentYY()) + "\r\n" + "NormalizedCentralMomentXX: " + String.valueOf(moments.getNormalizedCentralMomentXX()) + "\r\n" +
+                        "NormalizedCentralMomentXY: " + String.valueOf(moments.getNormalizedCentralMomentXY()) + "\r\n" + "CentralMomentYY: " + String.valueOf(moments.getNormalizedCentralMomentYY()) + "\r\n" +
+                        "Area: " + String.valueOf(moments.getArea()) + "\r\n" + "CentroidX: " + String.valueOf(moments.getCentroidX()) + "\r\n" +"CentroidY: " + String.valueOf(moments.getCentroidY())));
+                break;
+            case "Сегментация Distance Transform и Моменты сегментов":
+                BufferedImage toSegmentImg = SwingFXUtils.fromFXImage(ImageView2.getImage(), null);
+                BufferedImage resultImg;
+                ImageSegmentation segmentation = new ImageSegmentation();
+                resultImg = segmentation.segmentImage(toSegmentImg);
+                ImageView2.setImage(SwingFXUtils.toFXImage(resultImg, null));
+                ImageMoments Segmoments = new ImageMoments(toSegmentImg);
+                textField.setVisible(true);
+                textField.setText("CentralMomentXX: " + String.valueOf(Segmoments.getCentralMomentXX()) + "\r\n" + "CentralMomentXY: " +  String.valueOf(Segmoments.getCentralMomentXY() + "\r\n" +
+                        "CentralMomentYY: " + String.valueOf(Segmoments.getCentralMomentYY()) + "\r\n" + "NormalizedCentralMomentXX: " + String.valueOf(Segmoments.getNormalizedCentralMomentXX()) + "\r\n" +
+                        "NormalizedCentralMomentXY: " + String.valueOf(Segmoments.getNormalizedCentralMomentXY()) + "\r\n" + "CentralMomentYY: " + String.valueOf(Segmoments.getNormalizedCentralMomentYY()) + "\r\n" +
+                        "Area: " + String.valueOf(Segmoments.getArea()) + "\r\n" + "CentroidX: " + String.valueOf(Segmoments.getCentroidX()) + "\r\n" +"CentroidY: " + String.valueOf(Segmoments.getCentroidY())));
+
+                break;
             case "MSE":
                 double MSE;
                 MSE = calculateMSE(FirstImage, SecondImage);
@@ -206,5 +233,10 @@ public class UIController {
     public void onHideHistogramClick(ActionEvent actionEvent) {
         histogramChart.getData().clear();
         anchorPaneObj.getChildren().removeAll(histogramChart);
+    }
+
+    public void removeMoments(ActionEvent actionEvent) {
+        textField.clear();
+        textField.setVisible(false);
     }
 }
