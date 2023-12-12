@@ -177,13 +177,8 @@ public class UIController {
                 ImageSegmentation segmentation = new ImageSegmentation();
                 resultImg = segmentation.segmentImage(toSegmentImg);
                 ImageView2.setImage(SwingFXUtils.toFXImage(resultImg, null));
-                ImageMoments Segmoments = new ImageMoments(toSegmentImg);
                 textField.setVisible(true);
-                textField.setText("CentralMomentXX: " + String.valueOf(Segmoments.getCentralMomentXX()) + "\r\n" + "CentralMomentXY: " +  String.valueOf(Segmoments.getCentralMomentXY() + "\r\n" +
-                        "CentralMomentYY: " + String.valueOf(Segmoments.getCentralMomentYY()) + "\r\n" + "NormalizedCentralMomentXX: " + String.valueOf(Segmoments.getNormalizedCentralMomentXX()) + "\r\n" +
-                        "NormalizedCentralMomentXY: " + String.valueOf(Segmoments.getNormalizedCentralMomentXY()) + "\r\n" + "CentralMomentYY: " + String.valueOf(Segmoments.getNormalizedCentralMomentYY()) + "\r\n" +
-                        "Area: " + String.valueOf(Segmoments.getArea()) + "\r\n" + "CentroidX: " + String.valueOf(Segmoments.getCentroidX()) + "\r\n" +"CentroidY: " + String.valueOf(Segmoments.getCentroidY())));
-
+                textField.setText(segmentation.getText());
                 break;
             case "MSE":
                 double MSE;

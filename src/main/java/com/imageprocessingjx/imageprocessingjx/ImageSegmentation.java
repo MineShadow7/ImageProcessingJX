@@ -1,10 +1,10 @@
 package com.imageprocessingjx.imageprocessingjx;
 
-import java.awt.Color;
+import javafx.scene.control.TextArea;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+
 
 public class ImageSegmentation {
     private int[][] labels;
@@ -14,10 +14,11 @@ public class ImageSegmentation {
     private BufferedImage inputImage;
     private BufferedImage segmentedImage;
     private int numLabels;
+    private TextArea text = new TextArea();
+    private String megaOutput = "";
 
     public BufferedImage segmentImage(BufferedImage image) {
         BufferedImage resultImage;
-
         // Load the input image
         inputImage = image;
         width = inputImage.getWidth();
@@ -188,16 +189,18 @@ public class ImageSegmentation {
         }
 
         // Print the moments
+
         for (int i = 0; i < numLabels; i++) {
-            System.out.println("Segment " + (i + 1) + " moments:");
-            System.out.println("M00 moment: " + moments[i][0]);
-            System.out.println("M10 moment: " + moments[i][1]);
-            System.out.println("M01 moment: " + moments[i][2]);
-            System.out.println("M20 moment: " + moments[i][3]);
-            System.out.println("M11 moment: " + moments[i][4]);
-            System.out.println("M02 moment: " + moments[i][5]);
-            System.out.println("M30+M03 moment: " + moments[i][6]);
-            System.out.println();
+            megaOutput += ("Segment " + (i + 1) + " moments:");
+            megaOutput += ("\r\n" + "M00 moment: " + moments[i][0]);
+            megaOutput += ("\r\n" +"M10 moment: " + moments[i][1]);
+            megaOutput += ("\r\n" + "M01 moment: " + moments[i][2]);
+            megaOutput += ("\r\n" + "M20 moment: " + moments[i][3]);
+            megaOutput += ("\r\n" + "M11 moment: " + moments[i][4]);
+            megaOutput += ("\r\n" + "M02 moment: " + moments[i][5]);
+            megaOutput += ("\r\n" + "M30+M03 moment: " + moments[i][6]);
+            megaOutput += "\r\n";
+            text.setText(megaOutput);
         }
     }
 
@@ -221,5 +224,8 @@ public class ImageSegmentation {
                 }
             }
         }
+    }
+    public String getText(){
+        return text.getText();
     }
 }
